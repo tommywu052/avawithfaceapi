@@ -1,0 +1,30 @@
+{
+    "systemData": {
+        "createdAt": "2021-09-15T14:17:29.294Z",
+        "lastModifiedAt": "2021-09-16T15:19:00.337Z"
+    },
+    "name": "faceapihttptest",
+    "properties": {
+        "state": "Inactive",
+        "description": "",
+        "topologyName": "ObjectTrackingWithHttpExtension",
+        "parameters": [
+            {
+                "name": "inferenceUrl",
+                "value": "https://ava-funcapp.azurewebsites.net/api/facefunnew?code={Your Function Key}"
+            },
+            {
+                "name": "rtspPassword",
+                "value": "1qaz2wsx"
+            },
+            {
+                "name": "rtspUrl",
+                "value": "rtsp://192.168.31.228:554/cam/realmonitor?channel=1&subtype=0"
+            },
+            {
+                "name": "rtspUserName",
+                "value": "admin"
+            }
+        ]
+    }
+}
