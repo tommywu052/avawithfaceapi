@@ -98,6 +98,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         detectresponse = requests.post(face_api_url, params=params, headers=detectheaders, data=req_body) 
         psncnt = len(detectresponse.json())
         facearray =[]
+        responseperson = {}
         #rtnavajson = {}
         if(psncnt > 0 ) :
             for i in range(psncnt):
