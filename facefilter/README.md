@@ -1,4 +1,4 @@
-# Http Extension module
+# Http Extension module for No face frame filter 
 
 The HTTP extension module enables your own IoT Edge module to accept video frames as an http POST request.
 
@@ -45,71 +45,15 @@ First, a couple assumptions
 `cd` onto the http extension's root directory 
 
 ```
-sudo docker build -f .\docker\Dockerfile -t httpextension:latest .
+sudo docker build -f ./docker/Dockerfile -t httpcvextension:latest .
 
-sudo docker tag httpextension:latest myregistry.azurecr.io/httpextension:1
+sudo docker tag httpcvextension:latest myregistry.azurecr.io/httpcvextension:latest
 
-sudo docker push myregistry.azurecr.io/httpextension:1
+sudo docker push myregistry.azurecr.io/httpextension:latest
 ```
 
-Then, from the box where the container should execute, run this command:
 
-`sudo docker run -d -p 5001:5001 --name httpextension myregistry.azurecr.io/httpextension:1 -p 5001`
 
-Let's decompose it a bit:
-
-* `-p 5001:5001`: it's up to you where you'd like to map the containers 5001 port. You can pick whatever port fits your needs.
-* `--name`: the name of the running container.
-* `registry/image:tag`: replace this with the corresponding location/image:tag where you've pushed the image built from the `Dockerfile`
-* `-p`: the port the http extension server will listen on
-
-### Updating references into pipelineTopologies, to target the Http inferencing container address
-The [pipelineTopology](https://github.com/Azure/video-analyzer/tree/main/pipelines/live/topologies/httpExtension/2.0/topology.json) must define an inferencing URL:
-
-* Http Extension inferencing URL Parameter
-```
-{
-  "name": "inferencingUrl",
-  "type": "String",
-  "description": "inferencing Url",
-  "default": "https://<REPLACE-WITH-IP-OR-CONTAINER-NAME>/score"
-}
-```
-* Note the configuration of the extension processor
-```
-    "processors": [
-      {
-        "@type": "#Microsoft.VideoAnalyzer.HttpExtension",
-        "name": "inferenceClient",
-        "endpoint": {
-          "@type": "#Microsoft.VideoAnalyzer.TlsEndpoint",
-          "url": "${inferencingUrl}",
-          "credentials": {
-            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
-            "username": "${inferencingUserName}",
-            "password": "${inferencingPassword}"
-          }
-        },
-        "samplingOptions": {
-          "skipSamplesWithoutAnnotation": "false",
-          "maximumSamplesPerSecond": "5"
-        },
-        "image": {
-          "scale":
-          {
-            "mode": "Pad",
-            "width": "416",
-            "height": "416"
-          },
-          "format": {
-            "@type": "#Microsoft.VideoAnalyzer.ImageFormatJpeg",
-            "quality": "90"
-          }
-        }
-      }
-    ]
-
-```
 ## Using the http extension container
 
 Test the container using the following commands
@@ -122,29 +66,12 @@ To get the response of the processed image, use the following command
 curl -X POST https://<REPLACE-WITH-IP-OR-CONTAINER-NAME>/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
 ```
 
-If successful, you will see JSON printed on your screen that looks something like this
+If image has faces inside, you will see JSON printed on your screen that looks something like this
 
 ```JSON
-{
-  "inferences": [
-    {
-      "type": "classification",
-      "subType": "colorIntensity",
-      "classification": {
-        "confidence": 1,
-        "value": "dark"
-      }
-    }
-  ]
-}
+{"inferences": [{"type": "entity", "entity": {"tag": {"value": "TommyNoMask", "confidence": 0.91908}, "box": {"l": 0.44711538461538464, "t": 0.4543269230769231, "w": 0.14903846153846154, "h": 0.14903846153846154}}}]}
 ```
-
-Terminate the container using the following Docker commands
-
-```bash
-docker stop httpextension
-docker rm httpextension
-```
+if no faces, then reutrn nothing like ""
 
 ## Upload Docker image to Azure container registry
 
@@ -153,3 +80,8 @@ Follow instructions in [Push and Pull Docker images  - Azure Container Registry]
 ## Deploy as an Azure IoT Edge module
 
 Follow instruction in [Deploy module from Azure portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal) to deploy the container image as an IoT Edge module (use the IoT Edge module option).
+
+
+## Set your azure function face api on the edge module environment
+azure portal > IoT Hub > IoT Edge > Set Module >Environment Variable
+
