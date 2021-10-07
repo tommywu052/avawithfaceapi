@@ -85,3 +85,6 @@ Follow instruction in [Deploy module from Azure portal](https://docs.microsoft.c
 ## Set your azure function face api url on the edge module environment as "funcappUrl"
 azure portal > IoT Hub > IoT Edge > Set Module >Environment Variable
 ![alt text](./imgs/setedgeenv.jpg)
+
+## In AVA VS Code Extension, update the pipeline inferenceUrl as http://youredgemodulename:8080/score
+![alt text](./imgs/ava-seturl.jpg)
