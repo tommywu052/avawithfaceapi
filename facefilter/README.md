@@ -82,6 +82,6 @@ Follow instructions in [Push and Pull Docker images  - Azure Container Registry]
 Follow instruction in [Deploy module from Azure portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal) to deploy the container image as an IoT Edge module (use the IoT Edge module option).
 
 
-## Set your azure function face api on the edge module environment
+## Set your azure function face api url on the edge module environment as "funcappUrl"
 azure portal > IoT Hub > IoT Edge > Set Module >Environment Variable
-
+![alt text](./imgs/setedgeenv.jpg)
