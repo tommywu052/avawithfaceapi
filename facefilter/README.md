@@ -62,6 +62,10 @@ Test the container using the following commands
 
 To get the response of the processed image, use the following command
 
+## Docker run image to boot up testing container :
+sudo docker run -d -p 5001:8080 --name httpextension httpcvextension:latest
+curl -X POST http://localhost:5001/score -H "Content-Type: image/jpeg" --data-binary @test.jpg
+
 ```bash
 curl -X POST https://<REPLACE-WITH-IP-OR-CONTAINER-NAME>/score -H "Content-Type: image/jpeg" --data-binary @<image_file_in_jpeg>
 ```
